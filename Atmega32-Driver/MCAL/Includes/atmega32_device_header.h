@@ -37,11 +37,15 @@
 
 #define USART_Base			0x09	/* USART address */
 	
-#define UCSRC_Base			0x20	/* USART Control and Status Register C */
-#define UBRRH_Base			0x20	/* USART Baud Rate Register High */
+#define UCSRC_Base			0x20	/* USART Control and Status Register C address */
+#define UBRRH_Base			0x20	/* USART Baud Rate Register High address */
 
 #define SPI_Base			0x0D	/* SPI address */
 
+#define TIMER0_Base			0x23	/* TIMER0 address */
+
+#define TIFR_Base			0x36	/* Timer/Counter Interrupt Flag Register address */
+#define TIMSK_Base			0x37	/* Timer/Counter Interrupt Mask Register address */
 
 /* ================================================================ */
 /* ================= Peripheral Registers GPIO ==================== */
@@ -152,6 +156,25 @@ typedef struct{
 			
 }USART_Typedef_t;
 
+/*
+ * USART Control and Control Register C , Address Offset: 0x20 
+ */
+#define UCSRC			(*(vuint8_t*)(UCSRC_Base + IO_MAPPING_OFFSET))
+
+#define UCPOL			0	/* Clock Polarity */
+#define UCSZ0			1	/* Character Size */
+#define UCSZ1			2	/* Character Size */
+#define USBS			3	/* Stop Bit Select */
+#define UPM0			4	/* Parity Mode */
+#define UPM1			5	/* Parity Mode */
+#define UMSEL			6	/* Mode Select */
+#define URSEL			7	/* Register Select */
+
+/* 
+ * USART Baud Rate Register High , Address Offset: 0x20 
+ */
+#define UBRRH			(*(vuint8_t*)(UBRRH_Base + IO_MAPPING_OFFSET))	
+
 /* ================================================================ */
 /* ================ Peripheral Registers SPI ==================== */
 /* ================================================================ */
@@ -193,6 +216,51 @@ typedef struct
 	vuint8_t SPDR_;		/*  SPI Data Register is a read/write register, Address Offset: 0x0F  */
 		
 }SPI_Typedef_t;
+
+/* ================================================================ */
+/* ================ Peripheral Registers TIMER0 =================== */
+/* ================================================================ */
+typedef struct
+{
+	vuint8_t OCR0_;		/*  Output Compare Register, Address Offset: 0x23  */
+	
+	/*--*--*--*--*--*--*--*--*--*--*--*--*--*/
+	
+	vuint8_t TCNT0_;		/* Timer/Counter Register, Address Offset: 0x24  */
+	
+	/*--*--*--*--*--*--*--*--*--*--*--*--*--*/
+	
+	volatile union
+	{
+		vuint8_t TCCR0_;		/*  Timer/Counter Control Register, Address Offset: 0x25  */
+		struct
+		{
+			vuint8_t CS0n_	    :3;		/* Clock Select [n = 2:0] */
+			vuint8_t WGM01_		:1;		/* Waveform Generation Mode [n=0:1] */
+			vuint8_t COM0n_		:2;		/* Compare Match Output Mode [n = 1:0] */
+			vuint8_t WGM00_		:1;		/* Waveform Generation Mode */
+			vuint8_t FOC0_		:1;		/* Force Output Compare */
+		}bits;
+	}TCCR0_;
+	
+}TIMER0_Typedef_t;
+
+/*
+ * Timer/Counter Interrupt Mask Register , Address Offset: 0x37
+ */
+#define TIMSK			(*(vuint8_t*)(TIMSK_Base + IO_MAPPING_OFFSET))
+
+#define TOIE0			0	/* Timer/CounterTimer/Counter0 Overflow Interrupt Enable */
+#define OCIE0			1	/* Timer/CounterTimer/Counter0 Output Compare Match Interrupt Enable */
+
+/*
+ * Timer/Counter Interrupt Flag Register , Address Offset: 0x36
+ */
+#define TIFR			(*(vuint8_t*)(TIFR_Base + IO_MAPPING_OFFSET))
+
+#define TOV0			0	/* Timer/Counter0 Overflow Flag */
+#define OCF0			1	/* Output Compare Flag 0 */
+
 /* ================================================================ */
 /* =================== Peripheral Instants  ======================= */
 /* ================================================================ */
@@ -210,26 +278,9 @@ typedef struct
 /*-*-*-*-*-*-* SPI_Instants *-*-*-*-*-*-*/
 #define SPI				((SPI_Typedef_t*) (SPI_Base + IO_MAPPING_OFFSET))
 
+/*-*-*-*-*-*-* TIMER0_Instants *-*-*-*-*-*-*/
+#define TIMER0			((TIMER0_Typedef_t*) (TIMER0_Base + IO_MAPPING_OFFSET))
 
-
-/*
- * USART Control and Control Register C , Address Offset: 0x20 
- */
-#define UCSRC			(*(vuint8_t*)(UCSRC_Base + IO_MAPPING_OFFSET))
-
-#define UCPOL			0	/* Clock Polarity */
-#define UCSZ0			1	/* Character Size */
-#define UCSZ1			2	/* Character Size */
-#define USBS			3	/* Stop Bit Select */
-#define UPM0			4	/* Parity Mode */
-#define UPM1			5	/* Parity Mode */
-#define UMSEL			6	/* Mode Select */
-#define URSEL			7	/* Register Select */
-
-/* 
- * USART Baud Rate Register High , Address Offset: 0x20 
- */
-#define UBRRH			(*(vuint8_t*)(UBRRH_Base + IO_MAPPING_OFFSET))	
 
 /* ================================================================ */
 /* ====================== Generic Macros  ========================= */

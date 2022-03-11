@@ -5,10 +5,11 @@
  * Author : Mina-Karam
  */ 
 
-#include "atmega32_SPI_Test.h"
+#include "PWM.h"
 
 int main(void)
 {
-   SPI_Test();
+	 PWM_Test();
+	 return 0;
 }
 

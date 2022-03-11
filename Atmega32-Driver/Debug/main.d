@@ -1,3 +1,3 @@
-main.d main.o: .././main.c ../App/Includes/atmega32_SPI_Test.h
+main.d main.o: .././main.c ../App/Includes/PWM.h
 
-../App/Includes/atmega32_SPI_Test.h:
+../App/Includes/PWM.h:
